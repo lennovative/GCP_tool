@@ -35,7 +35,7 @@ def main():
     while(index < n):
         show_image(filenames[index], window_name)
         if params[0]:
-            params[1] += filenames[index].split("/")[-1]
+            params[1] += filenames[index].split("\\")[-1]
             print("(" + str(index+1) + "/" + str(n) + ") " + params[1].split("\n")[-1])
             params[0] = False
             index += 1
