@@ -3,11 +3,11 @@ import os
 import glob
 import sys
 
-def show_image(filename, window_name):
+def show_image(filename, window_name, window_size=(700, 1700)):
     img = cv2.imread(filename)
     cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
     cv2.imshow(window_name, img)
-    cv2.resizeWindow(window_name, 1700, 700)
+    cv2.resizeWindow(window_name, window_size[1], window_size[0])
 
 def click_event(event, x, y, flags, params):
     if event == cv2.EVENT_LBUTTONDOWN and not params[0]:
