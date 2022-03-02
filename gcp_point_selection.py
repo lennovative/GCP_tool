@@ -2,17 +2,17 @@ import cv2
 import os
 import glob
 import sys
+import pandas as pd
 
-def show_image(filename, window_name, window_size=(700, 1700)):
+def show_image(filename, window_name):
     img = cv2.imread(filename)
-    cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
     cv2.imshow(window_name, img)
-    cv2.resizeWindow(window_name, window_size[1], window_size[0])
+
 
 def click_event(event, x, y, flags, params):
     if event == cv2.EVENT_LBUTTONDOWN and not params[0]:
         params[0] = True
-        params[1] += f"\n{x} {y} "       
+        params[1] += f"\n{x} {y} "
 
 def main():
     a = sys.argv
@@ -22,18 +22,27 @@ def main():
         print('invalid path')
         return
 
-    filenames = glob.glob(path + '/*.JPG')
-    filenames.sort()
+    filenames = glob.glob(path + '/*/*.JPG')
     n = len(filenames)
-    
-    params = [False, ""]
+    if n == 0:
+        print("no JPG images found")
+        return
+    filenames.sort()
+
     window_name = "GCP" #f"GCP for image {image_name} ({index}/{n})"
-    show_image(filenames[0], window_name)
+    window_size=(700, 1700)
+    waypoints = pd.read_csv("./waypoints.csv", index_col="label")
+    
+    params = [False, "WGS84 UTM 32N"]
+    cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
+    cv2.resizeWindow(window_name, window_size[1], window_size[0])
     cv2.setMouseCallback(window_name, click_event, params)
 
     index = 0
     while(index < n):
-        show_image(filenames[index], window_name)
+        filename = filenames[index]
+        waypoint = filename.split("\\")[-2]
+        show_image(filename, window_name)
         if params[0]:
             params[1] += filenames[index].split("\\")[-1]
             print("(" + str(index+1) + "/" + str(n) + ") " + params[1].split("\n")[-1])
