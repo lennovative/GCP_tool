@@ -31,9 +31,9 @@ def main():
 
     window_name = "GCP" #f"GCP for image {image_name} ({index}/{n})"
     window_size=(700, 1700)
+    result_path = "./gcp_file.txt"
     waypoints = pd.read_csv("./waypoints.csv", index_col="label")
     print(waypoints)
-    #exit()
     
     params = [False, "WGS84 UTM 32N"]
     cv2.namedWindow(window_name, cv2.WINDOW_NORMAL)
@@ -60,15 +60,15 @@ def main():
         else:
             k = cv2.waitKey(10)
             if k == 27: #Esc
+                params[1] += "..."
                 break
             elif k == 8 and index > 0 and not params[0]: #Backspace
-                print("delete point " + str(index))
+                print("delete entry " + str(index))
                 index -= 1
-                s = params[1]
+                params[1] = "\n".join(params[1].split("\n")[:-2])
                 new_entry_prepared = False
     cv2.destroyAllWindows()
-    print(params[1])
-    result_path = "./gcp_file.txt"
+    print("-"*20 + "\n" + params[1])
     file1 = open(result_path, "w")
     file1.write(params[1])
     file1.close()
