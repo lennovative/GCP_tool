@@ -45,12 +45,12 @@ def main():
     filenames = glob.glob(path + '/*/*.JPG')
     n = len(filenames)
     if n == 0:
-        print("no JPG images found")
+        print('no JPG images found at ' + path)
         return
     filenames.sort()
 
     if not os.path.exists(path_waypoints):
-        print('waypoints csv file missing')
+        print(path_waypoints + ' missing')
         return
 
     window_name = "GCP" #f"GCP for image {image_name} ({index}/{n})"
@@ -120,7 +120,7 @@ def main():
     file1 = open(result_path, "w")
     file1.write(params[1])
     file1.close()
-    print('saved to "' + result_path + '"')
+    print('saved to ' + result_path)
 
 if __name__ == "__main__":
     main()
