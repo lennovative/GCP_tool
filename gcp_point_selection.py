@@ -72,7 +72,11 @@ def main():
         filename = filenames[index]
         if not new_entry_prepared:
             wp = filename.split("\\")[-2]
-            data = dict(waypoints.loc[wp])
+            try:
+                data = dict(waypoints.loc[wp])
+            except KeyError:
+                index += 1
+                continue
             params[1] += "\n{} {} {} ".format(data["lat"], data["long"], data["ele_correc"])
             print("({}/{}) Waypoint {}: {}".format(str(index+1), str(n), wp, data["comment"]))
             new_entry_prepared = True
