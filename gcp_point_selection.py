@@ -39,21 +39,21 @@ def main():
     path_waypoints = "./waypoints.csv"
 
     if not os.path.exists(path):
-        print('invalid path')
+        print(f'invalid path: {path}')
         return
 
-    filenames = glob.glob(path + '/*/*.JPG')
+    if not os.path.exists(path_waypoints):
+        print(f'{path_waypoints} missing')
+        return
+
+    filenames = glob.glob(f'{path}/*/*.JPG')
     n = len(filenames)
     if n == 0:
-        print('no JPG images found at ' + path)
+        print(f'no JPG images found at {path}')
         return
     filenames.sort()
 
-    if not os.path.exists(path_waypoints):
-        print(path_waypoints + ' missing')
-        return
-
-    window_name = "GCP" #f"GCP for image {image_name} ({index}/{n})"
+    window_name = "GCP Tool"
     result_path = "./gcp.txt"
     waypoints = pd.read_csv(path_waypoints, index_col="label")
     print(waypoints)
